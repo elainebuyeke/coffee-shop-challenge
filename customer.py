@@ -1,24 +1,32 @@
 class Customer:
+    all = []
+
     def __init__(self, name):
-        self.name = name
-        
-    @property
-    def name(self):
-        return self._name
-    
-    @name.setter
-    def name(self, value):
-        if not isinstance(value, str):
+        if not isinstance(name, str):
             raise TypeError("Name must be a string")
-        if not 1 <= len(value) <= 15:
-            raise ValueError("Name must be between 1 and 15 characters")
-        self._name = value
-        
+        self.name = name
+        Customer.all.append(self)
+
     def orders(self):
+        from order import Order
         return [order for order in Order.all if order.customer == self]
-    
+
     def coffees(self):
         return list({order.coffee for order in self.orders()})
-    
-    def create_order(self, coffee, price):
-        return Order(self, coffee, price)
+class Customer:
+    all = []
+
+    def __init__(self, name):
+        if not isinstance(name, str):
+            raise TypeError("Name must be a string")
+        if len(name.strip()) < 2:
+            raise ValueError("Name must be at least 2 characters long")
+        self.name = name
+        Customer.all.append(self)
+
+    def orders(self):
+        from order import Order
+        return [order for order in Order.all if order.customer == self]
+
+    def coffees(self):
+        return list({order.coffee for order in self.orders()})
